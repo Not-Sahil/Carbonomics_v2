@@ -14,6 +14,18 @@ env/
 .env.*
 !.env.example
 
+# Node.js & Next.js
+node_modules/
+.next/
+out/
+build/
+dist/
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+
 # IDE
 .vscode/
 .idea/

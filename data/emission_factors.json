@@ -1,0 +1,268 @@
+{
+  "version": "3.0.0",
+  "updated_at": "2026-11-04T00:00:00Z",
+  "default_region": "ap-south-1",
+  "default_pue": 1.2,
+  "regions": {
+    "ap-south-1": {
+      "name": "Asia Pacific (Mumbai)",
+      "country": "IN",
+      "factor": 0.71,
+      "renewable_pct": 18,
+      "grid_intensity_grade": "High",
+      "pue_typical": 1.35
+    },
+    "ap-southeast-1": {
+      "name": "Asia Pacific (Singapore)",
+      "country": "SG",
+      "factor": 0.49,
+      "renewable_pct": 20,
+      "grid_intensity_grade": "Medium-High",
+      "pue_typical": 1.32
+    },
+    "ap-northeast-1": {
+      "name": "Asia Pacific (Tokyo)",
+      "country": "JP",
+      "factor": 0.47,
+      "renewable_pct": 24,
+      "grid_intensity_grade": "Medium",
+      "pue_typical": 1.28
+    },
+    "us-east-1": {
+      "name": "US East (N. Virginia)",
+      "country": "US",
+      "factor": 0.42,
+      "renewable_pct": 28,
+      "grid_intensity_grade": "Medium",
+      "pue_typical": 1.22
+    },
+    "us-west-1": {
+      "name": "US West (N. California)",
+      "country": "US",
+      "factor": 0.21,
+      "renewable_pct": 58,
+      "grid_intensity_grade": "Low-Medium",
+      "pue_typical": 1.18
+    },
+    "us-west-2": {
+      "name": "US West (Oregon)",
+      "country": "US",
+      "factor": 0.15,
+      "renewable_pct": 74,
+      "grid_intensity_grade": "Low",
+      "pue_typical": 1.15
+    },
+    "eu-west-1": {
+      "name": "Europe West (Ireland)",
+      "country": "IE",
+      "factor": 0.28,
+      "renewable_pct": 52,
+      "grid_intensity_grade": "Medium-Low",
+      "pue_typical": 1.16
+    },
+    "eu-central-1": {
+      "name": "Europe Central (Frankfurt)",
+      "country": "DE",
+      "factor": 0.35,
+      "renewable_pct": 46,
+      "grid_intensity_grade": "Medium",
+      "pue_typical": 1.20
+    },
+    "eu-north-1": {
+      "name": "Europe North (Stockholm)",
+      "country": "SE",
+      "factor": 0.08,
+      "renewable_pct": 95,
+      "grid_intensity_grade": "Ultra-Low",
+      "pue_typical": 1.12
+    },
+    "sa-east-1": {
+      "name": "South America (São Paulo)",
+      "country": "BR",
+      "factor": 0.18,
+      "renewable_pct": 78,
+      "grid_intensity_grade": "Low-Medium",
+      "pue_typical": 1.25
+    },
+    "ca-central-1": {
+      "name": "Canada Central (Montreal)",
+      "country": "CA",
+      "factor": 0.13,
+      "renewable_pct": 82,
+      "grid_intensity_grade": "Low",
+      "pue_typical": 1.15
+    },
+    "on-premise": {
+      "name": "On-Premise / Corporate Lab",
+      "country": "Global",
+      "factor": 0.42,
+      "renewable_pct": 20,
+      "grid_intensity_grade": "Medium",
+      "pue_typical": 1.45
+    }
+  },
+  "country_aliases": {
+    "india": "ap-south-1",
+    "in": "ap-south-1",
+    "asia": "ap-southeast-1",
+    "us": "us-east-1",
+    "usa": "us-east-1",
+    "united states": "us-east-1",
+    "europe": "eu-central-1",
+    "germany": "eu-central-1",
+    "de": "eu-central-1",
+    "ireland": "eu-west-1",
+    "sweden": "eu-north-1",
+    "australia": "ap-southeast-1",
+    "au": "ap-southeast-1",
+    "japan": "ap-northeast-1",
+    "jp": "ap-northeast-1",
+    "singapore": "ap-southeast-1",
+    "sg": "ap-southeast-1",
+    "canada": "ca-central-1",
+    "ca": "ca-central-1",
+    "brazil": "sa-east-1",
+    "br": "sa-east-1"
+  },
+  "cloud_providers": {
+    "aws": {
+      "us-east-1": {"factor": 0.42, "pue": 1.20},
+      "us-west-2": {"factor": 0.15, "pue": 1.15},
+      "eu-north-1": {"factor": 0.08, "pue": 1.12},
+      "ap-south-1": {"factor": 0.71, "pue": 1.30}
+    },
+    "gcp": {
+      "us-central1": {"factor": 0.38, "pue": 1.11},
+      "europe-west1": {"factor": 0.14, "pue": 1.09},
+      "asia-south1": {"factor": 0.68, "pue": 1.18}
+    },
+    "azure": {
+      "eastus": {"factor": 0.42, "pue": 1.18},
+      "northeurope": {"factor": 0.28, "pue": 1.14},
+      "centralindia": {"factor": 0.71, "pue": 1.28}
+    }
+  },
+  "device_profiles": {
+    "laptop": {
+      "cpu_tdp": 45,
+      "idle_w": 8,
+      "typical_w": 25,
+      "memory_watt_gb": 0.3,
+      "display_w": 5,
+      "embodied_kg_co2": 180,
+      "lifespan_years": 4
+    },
+    "desktop": {
+      "cpu_tdp": 125,
+      "idle_w": 40,
+      "typical_w": 80,
+      "memory_watt_gb": 0.4,
+      "display_w": 30,
+      "embodied_kg_co2": 320,
+      "lifespan_years": 5
+    },
+    "workstation": {
+      "cpu_tdp": 250,
+      "idle_w": 80,
+      "typical_w": 200,
+      "memory_watt_gb": 0.5,
+      "display_w": 40,
+      "embodied_kg_co2": 520,
+      "lifespan_years": 5
+    },
+    "server_1u": {
+      "cpu_tdp": 200,
+      "idle_w": 80,
+      "typical_w": 150,
+      "memory_watt_gb": 0.4,
+      "display_w": 0,
+      "embodied_kg_co2": 950,
+      "lifespan_years": 4
+    },
+    "server_2u": {
+      "cpu_tdp": 400,
+      "idle_w": 120,
+      "typical_w": 280,
+      "memory_watt_gb": 0.4,
+      "display_w": 0,
+      "embodied_kg_co2": 1400,
+      "lifespan_years": 4
+    },
+    "server_blade": {
+      "cpu_tdp": 300,
+      "idle_w": 100,
+      "typical_w": 220,
+      "memory_watt_gb": 0.4,
+      "display_w": 0,
+      "embodied_kg_co2": 1100,
+      "lifespan_years": 4
+    },
+    "raspberry_pi": {
+      "cpu_tdp": 5,
+      "idle_w": 2,
+      "typical_w": 4,
+      "memory_watt_gb": 0.1,
+      "display_w": 0,
+      "embodied_kg_co2": 15,
+      "lifespan_years": 5
+    },
+    "mini_pc": {
+      "cpu_tdp": 35,
+      "idle_w": 5,
+      "typical_w": 15,
+      "memory_watt_gb": 0.3,
+      "display_w": 0,
+      "embodied_kg_co2": 120,
+      "lifespan_years": 5
+    },
+    "cloud_vm_small": {
+      "cpu_tdp": 30,
+      "idle_w": 6,
+      "typical_w": 18,
+      "memory_watt_gb": 0.35,
+      "display_w": 0,
+      "embodied_kg_co2": 80,
+      "lifespan_years": 3
+    },
+    "cloud_vm_medium": {
+      "cpu_tdp": 70,
+      "idle_w": 15,
+      "typical_w": 45,
+      "memory_watt_gb": 0.35,
+      "display_w": 0,
+      "embodied_kg_co2": 160,
+      "lifespan_years": 3
+    },
+    "cloud_vm_large": {
+      "cpu_tdp": 150,
+      "idle_w": 35,
+      "typical_w": 110,
+      "memory_watt_gb": 0.35,
+      "display_w": 0,
+      "embodied_kg_co2": 320,
+      "lifespan_years": 3
+    },
+    "cloud_vm_gpu": {
+      "cpu_tdp": 180,
+      "idle_w": 50,
+      "typical_w": 350,
+      "memory_watt_gb": 0.45,
+      "display_w": 0,
+      "embodied_kg_co2": 750,
+      "lifespan_years": 3
+    }
+  },
+  "hardware_coefficients": {
+    "memory_ddr4_watt_per_gb": 0.3725,
+    "memory_ddr5_watt_per_gb": 0.2800,
+    "storage_ssd_active_watt_per_gb": 0.0018,
+    "storage_hdd_active_watt_per_gb": 0.0055,
+    "network_kwh_per_gb_lan": 0.0001,
+    "network_kwh_per_gb_wan": 0.0012,
+    "gpu_tdp_workstation": 300,
+    "gpu_tdp_desktop": 220,
+    "gpu_tdp_laptop": 80,
+    "gpu_tdp_datacenter_a100": 400,
+    "gpu_idle_fraction": 0.12
+  }
+}

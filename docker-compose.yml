@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: carbonomics-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: carbonomics
+      POSTGRES_USER: carbonomics_user
+      POSTGRES_PASSWORD: carbonomics_secret_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: carbonomics-backend
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://carbonomics_user:carbonomics_secret_password@db:5432/carbonomics
+      - PORT=5000
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: carbonomics-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:5000
+      - PORT=3000
+    ports:
+      - "3000:3000"
+
+volumes:
+  postgres_data:
