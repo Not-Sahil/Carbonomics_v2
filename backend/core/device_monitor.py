@@ -237,7 +237,7 @@ def _get_mock_metrics():
 
 def compute_device_emission(metrics, region="ap-south-1", device_type="laptop", cooling_pue=1.0):
     """Compute real-time carbon emission from live metrics"""
-    from .carbon_calculator import REGION_FACTORS, DEVICE_TDP_PROFILES as CALC_PROFILES
+    from .carbon_calculator import REGION_FACTORS, DEVICE_PROFILES
 
     ef = REGION_FACTORS.get(region, {"factor": 0.42})["factor"]
     # Map to calculator profiles

@@ -40,6 +40,9 @@ DEVICE_PROFILES = {
     "router":           {"cpu_tdp": 0,   "idle_w": 8,   "typical_w": 12,  "memory_watt_gb": 0,   "display_w": 0},
 }
 
+DEVICE_TDP_PROFILES = DEVICE_PROFILES
+
+
 # Hardware constants
 MEMORY_WATTS_PER_GB = 0.3725    # DDR4 power consumption
 STORAGE_SSD_WATTS_PER_GB = 0.002
