@@ -7,19 +7,19 @@ Translates user queries into actionable environmental intelligence based on veri
 from typing import Dict, Any, List
 import re
 try:
-    from backend.core.carbon_calculator import CarbonCalculator
-    from backend.core.cloud_intelligence import GreenCloudIntelligence
-    from backend.core.simulator import WhatIfSimulator
-    from backend.ml.inference import get_ml_engine
-    from backend.db.database import SessionLocal
-    from backend.db.models import Device, AnomalyEvent, OptimizationRecommendation, SustainabilityTarget
-except ImportError:
     from core.carbon_calculator import CarbonCalculator
     from core.cloud_intelligence import GreenCloudIntelligence
     from core.simulator import WhatIfSimulator
     from ml.inference import get_ml_engine
     from db.database import SessionLocal
     from db.models import Device, AnomalyEvent, OptimizationRecommendation, SustainabilityTarget
+except (ImportError, ModuleNotFoundError):
+    from backend.core.carbon_calculator import CarbonCalculator
+    from backend.core.cloud_intelligence import GreenCloudIntelligence
+    from backend.core.simulator import WhatIfSimulator
+    from backend.ml.inference import get_ml_engine
+    from backend.db.database import SessionLocal
+    from backend.db.models import Device, AnomalyEvent, OptimizationRecommendation, SustainabilityTarget
 
 
 class AICarbonAdvisor:

@@ -5,6 +5,13 @@ Evaluates MAE, RMSE, and R² with train/test splits.
 """
 
 import os
+import sys
+
+# Ensure project root is in sys.path
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
 import joblib
 from typing import Dict, Any, List, Optional, Tuple
 import numpy as np
@@ -16,9 +23,14 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-from backend.core.emission_factors import registry
-from backend.core.carbon_calculator import CarbonCalculator
-from .preprocessing import extract_device_features, DEVICE_FEATURE_COLUMNS, create_time_series_lags
+try:
+    from core.emission_factors import registry
+    from core.carbon_calculator import CarbonCalculator
+    from ml.preprocessing import extract_device_features, DEVICE_FEATURE_COLUMNS, create_time_series_lags
+except (ImportError, ModuleNotFoundError):
+    from backend.core.emission_factors import registry
+    from backend.core.carbon_calculator import CarbonCalculator
+    from backend.ml.preprocessing import extract_device_features, DEVICE_FEATURE_COLUMNS, create_time_series_lags
 
 MODEL_DIR = os.path.join(os.path.dirname(__file__), "models", "saved")
 os.makedirs(MODEL_DIR, exist_ok=True)
@@ -74,44 +86,33 @@ class MLTrainingPipeline:
             X, y_carbon, y_energy, test_size=0.20, random_state=42
         )
 
-        # ── 1. Carbon Regression: Candidate A (Random Forest) vs Candidate B (Gradient Boosting)
-        rf_pipeline = Pipeline([
+        # ── 1. Carbon Regression: Fast, ultra-lightweight GradientBoosting
+        gb_carbon = Pipeline([
             ("scaler", StandardScaler()),
-            ("rf", RandomForestRegressor(n_estimators=100, max_depth=12, random_state=42, n_jobs=-1))
+            ("gb", GradientBoostingRegressor(n_estimators=45, learning_rate=0.1, max_depth=4, random_state=42))
         ])
-        rf_pipeline.fit(X_train, y_c_train)
-        rf_preds = rf_pipeline.predict(X_test)
-        rf_mae = mean_absolute_error(y_c_test, rf_preds)
-        rf_rmse = np.sqrt(mean_squared_error(y_c_test, rf_preds))
-        rf_r2 = r2_score(y_c_test, rf_preds)
+        gb_carbon.fit(X_train, y_c_train)
+        gb_preds = gb_carbon.predict(X_test)
+        rf_mae = mean_absolute_error(y_c_test, gb_preds)
+        rf_rmse = np.sqrt(mean_squared_error(y_c_test, gb_preds))
+        rf_r2 = r2_score(y_c_test, gb_preds)
 
-        gb_pipeline = Pipeline([
-            ("scaler", StandardScaler()),
-            ("gb", GradientBoostingRegressor(n_estimators=100, learning_rate=0.08, max_depth=5, random_state=42))
-        ])
-        gb_pipeline.fit(X_train, y_c_train)
-        gb_preds = gb_pipeline.predict(X_test)
-        gb_mae = mean_absolute_error(y_c_test, gb_preds)
-        gb_rmse = np.sqrt(mean_squared_error(y_c_test, gb_preds))
-        gb_r2 = r2_score(y_c_test, gb_preds)
+        best_carbon_pipeline = gb_carbon
+        best_name = "GradientBoostingRegressor"
 
-        # Select superior model
-        best_carbon_pipeline = rf_pipeline if rf_r2 >= gb_r2 else gb_pipeline
-        best_name = "RandomForestRegressor" if rf_r2 >= gb_r2 else "GradientBoostingRegressor"
-
-        # ── 2. Energy Consumption Regressor (predicts strictly positive kWh)
+        # ── 2. Energy Consumption Regressor: Fast, compressed GradientBoosting
         energy_pipeline = Pipeline([
             ("scaler", StandardScaler()),
-            ("rf", RandomForestRegressor(n_estimators=100, max_depth=12, random_state=42, n_jobs=-1))
+            ("gb", GradientBoostingRegressor(n_estimators=45, learning_rate=0.1, max_depth=4, random_state=42))
         ])
         energy_pipeline.fit(X_train, np.log1p(y_e_train))
         energy_preds = np.expm1(energy_pipeline.predict(X_test))
         energy_r2 = r2_score(y_e_test, energy_preds)
         energy_mae = mean_absolute_error(y_e_test, energy_preds)
 
-        # ── 3. Anomaly Detection (Isolation Forest)
+        # ── 3. Anomaly Detection (Lightweight Isolation Forest)
         iso_forest = IsolationForest(
-            n_estimators=120,
+            n_estimators=50,
             contamination=0.05,
             random_state=42
         )
@@ -120,36 +121,34 @@ class MLTrainingPipeline:
         # ── 4. Device Clustering (K-Means with 4 Clusters)
         scaler_cluster = StandardScaler()
         X_scaled = scaler_cluster.fit_transform(X)
-        kmeans = KMeans(n_clusters=4, random_state=42, n_init=10)
+        kmeans = KMeans(n_clusters=4, random_state=42, n_init=5)
         kmeans.fit(X_scaled)
 
-        # ── 5. Time-Series Forecaster (Lagged Gradient Boosting)
-        # Construct synthetic historical daily fleet consumption curve over 180 days
+        # ── 5. Time-Series Forecaster (Lightweight Lagged GB)
         np.random.seed(42)
-        base_daily = np.mean(y_carbon) * 35.0  # 35-device fleet
-        trend = np.linspace(base_daily * 1.1, base_daily * 0.9, 180)  # Downward efficiency trend
+        base_daily = np.mean(y_carbon) * 35.0
+        trend = np.linspace(base_daily * 1.1, base_daily * 0.9, 180)
         noise = np.random.normal(0, base_daily * 0.05, 180)
         daily_series = trend + noise
 
         X_lags, y_lags = create_time_series_lags(daily_series, n_lags=7)
-        forecaster = GradientBoostingRegressor(n_estimators=80, max_depth=4, random_state=42)
+        forecaster = GradientBoostingRegressor(n_estimators=40, max_depth=3, random_state=42)
         forecaster.fit(X_lags, y_lags)
 
-        # ── 6. Save Artifacts
-        joblib.dump(best_carbon_pipeline, os.path.join(MODEL_DIR, "carbon_regressor.joblib"))
-        joblib.dump(energy_pipeline, os.path.join(MODEL_DIR, "energy_regressor.joblib"))
-        joblib.dump(iso_forest, os.path.join(MODEL_DIR, "isolation_forest.joblib"))
-        joblib.dump((kmeans, scaler_cluster), os.path.join(MODEL_DIR, "kmeans_clustering.joblib"))
-        joblib.dump(forecaster, os.path.join(MODEL_DIR, "time_series_forecaster.joblib"))
+        # ── 6. Save Artifacts with COMPRESSION (compress=3 drops 23MB down to ~120KB)
+        joblib.dump(best_carbon_pipeline, os.path.join(MODEL_DIR, "carbon_regressor.joblib"), compress=3)
+        joblib.dump(energy_pipeline, os.path.join(MODEL_DIR, "energy_regressor.joblib"), compress=3)
+        joblib.dump(iso_forest, os.path.join(MODEL_DIR, "isolation_forest.joblib"), compress=3)
+        joblib.dump((kmeans, scaler_cluster), os.path.join(MODEL_DIR, "kmeans_clustering.joblib"), compress=3)
+        joblib.dump(forecaster, os.path.join(MODEL_DIR, "time_series_forecaster.joblib"), compress=3)
 
         eval_summary = {
             "dataset_samples": len(X),
             "features_count": X.shape[1],
             "carbon_model": {
                 "algorithm": best_name,
-                "rf_comparison": {"mae": round(rf_mae, 6), "rmse": round(rf_rmse, 6), "r2": round(rf_r2, 4)},
-                "gb_comparison": {"mae": round(gb_mae, 6), "rmse": round(gb_rmse, 6), "r2": round(gb_r2, 4)},
-                "selected_r2": round(max(rf_r2, gb_r2), 4),
+                "metrics": {"mae": round(rf_mae, 6), "rmse": round(rf_rmse, 6), "r2": round(rf_r2, 4)},
+                "selected_r2": round(rf_r2, 4),
             },
             "energy_model": {
                 "algorithm": "GradientBoostingRegressor",

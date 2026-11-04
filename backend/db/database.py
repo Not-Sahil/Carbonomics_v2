@@ -140,7 +140,10 @@ def init_db():
 
             if os.path.exists(target_csv):
                 import pandas as pd
-                from backend.core.carbon_calculator import CarbonCalculator
+                try:
+                    from core.carbon_calculator import CarbonCalculator
+                except (ImportError, ModuleNotFoundError):
+                    from backend.core.carbon_calculator import CarbonCalculator
                 calc = CarbonCalculator()
 
                 df = pd.read_csv(target_csv)

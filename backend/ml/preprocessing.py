@@ -6,7 +6,10 @@ Handles normalization, categorical mappings, physical feature augmentation, and 
 from typing import Dict, Any, List, Tuple
 import numpy as np
 import pandas as pd
-from backend.core.emission_factors import registry
+try:
+    from core.emission_factors import registry
+except (ImportError, ModuleNotFoundError):
+    from backend.core.emission_factors import registry
 
 DEVICE_FEATURE_COLUMNS = [
     "cpu_util_pct",
