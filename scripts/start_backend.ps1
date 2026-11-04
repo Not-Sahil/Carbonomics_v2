@@ -11,3 +11,4 @@ if (Test-Path ".venv\Scripts\Activate.ps1") {
 } else {
     python backend/api/app.py
 }
+

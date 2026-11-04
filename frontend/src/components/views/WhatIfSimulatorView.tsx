@@ -311,3 +311,4 @@ export const WhatIfSimulatorView: React.FC = () => {
     </div>
   );
 };
+

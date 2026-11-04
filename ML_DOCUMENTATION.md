@@ -70,3 +70,4 @@ Local prediction explanations decompose the delta between baseline idle hardware
 - **GPU Accelerated Workload:** ~20% of carbon variance.
 - **RAM & Disk Parasitic Standby:** ~10–15% of carbon variance.
 - **Cooling Overhead:** ~5% of carbon variance.
+

@@ -189,3 +189,4 @@ export const AiAdvisorDrawer: React.FC<AiAdvisorDrawerProps> = ({ isOpen, onClos
     </div>
   );
 };
+

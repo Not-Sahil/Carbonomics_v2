@@ -24,8 +24,12 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 import pandas as pd
 
-# Add parent directory to sys.path so modules are resolvable
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+# Add both project root and backend directory to sys.path so all imports resolve seamlessly
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+BACKEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+for p in [PROJECT_ROOT, BACKEND_DIR]:
+    if p not in sys.path:
+        sys.path.insert(0, p)
 
 from core.emission_factors import registry, REGION_FACTORS, DEVICE_PROFILES
 from core.carbon_calculator import CarbonCalculator

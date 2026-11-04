@@ -151,3 +151,4 @@ class WhatIfSimulator:
                 "description": "Consolidates low-utilization rack servers into high-density virtualized nodes with liquid cooling."
             }
         }
+

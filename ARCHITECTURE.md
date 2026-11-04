@@ -89,3 +89,4 @@ Where:
 - Built on Next.js 14, React 18, TypeScript, Tailwind CSS, Recharts, Framer Motion, and Lucide React.
 - Styled with dark theme palette: Background `#090D14`, Cards `#151D2B`, Primary Emerald `#16C784`, Cyan `#38BDF8`.
 - 12 fully functional operational views without placeholders or mock data.
+

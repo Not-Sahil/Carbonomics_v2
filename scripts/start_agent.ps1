@@ -18,3 +18,4 @@ if (Test-Path ".venv\Scripts\Activate.ps1") {
 } else {
     python device_agent/agent.py --server $Server --region $Region --device-type $DeviceType
 }
+

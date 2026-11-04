@@ -470,3 +470,4 @@ export const CarbonEstimatorView: React.FC = () => {
     </div>
   );
 };
+

@@ -185,3 +185,4 @@ class AuditLog(Base):
     action = Column(String(100), nullable=False)
     details = Column(Text, nullable=True)
     timestamp = Column(DateTime, default=datetime.utcnow)
+

@@ -93,3 +93,4 @@ def compute_carbon_efficiency_score(
         "emission_per_unit": round(emission_per_unit, 6),
         "kwh_per_hour": round(kwh_per_hour, 4)
     }
+

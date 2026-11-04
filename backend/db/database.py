@@ -298,3 +298,4 @@ def init_db():
         print(f"Error during database initialization: {e}")
     finally:
         db.close()
+

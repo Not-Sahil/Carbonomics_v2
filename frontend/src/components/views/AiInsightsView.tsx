@@ -269,3 +269,4 @@ export const AiInsightsView: React.FC = () => {
     </div>
   );
 };
+

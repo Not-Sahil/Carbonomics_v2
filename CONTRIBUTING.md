@@ -29,3 +29,4 @@ Before committing:
 - **Backend:** PEP 8 compliance, explicit type hints in function signatures.
 - **Frontend:** TypeScript strict mode, functional React components with Tailwind CSS.
 - **Physics & Math:** All carbon equations must follow the Green Software Foundation SCI specification.
+

@@ -170,3 +170,4 @@ Ask natural language questions to the data-grounded assistant.
 }
 ```
 Response includes verified tool outputs and suggested follow-up questions.
+

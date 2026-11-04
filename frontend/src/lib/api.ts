@@ -48,3 +48,4 @@ export const api = {
   explainFeature: (item: any) => fetchApi<any>("/api/explain", { method: "POST", body: JSON.stringify(item) }),
   advisorChat: (query: string) => fetchApi<any>("/api/advisor/chat", { method: "POST", body: JSON.stringify({ query }) }),
 };
+

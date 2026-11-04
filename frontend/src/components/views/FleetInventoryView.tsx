@@ -225,3 +225,4 @@ export const FleetInventoryView: React.FC<FleetInventoryViewProps> = ({
     </div>
   );
 };
+

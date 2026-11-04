@@ -182,3 +182,4 @@ registry = EmissionFactorRegistry()
 REGION_FACTORS = registry.regions
 DEVICE_PROFILES = registry.device_profiles
 DEVICE_TDP_PROFILES = registry.device_profiles
+

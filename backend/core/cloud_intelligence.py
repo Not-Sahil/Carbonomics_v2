@@ -139,3 +139,4 @@ class GreenCloudIntelligence:
             },
             "hourly_timeline": hourly_profiles
         }
+

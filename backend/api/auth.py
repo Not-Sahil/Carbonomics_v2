@@ -57,3 +57,4 @@ def admin_required(f):
             return jsonify({"error": "Admin privileges required", "code": "FORBIDDEN"}), 403
         return f(*args, **kwargs)
     return decorated
+

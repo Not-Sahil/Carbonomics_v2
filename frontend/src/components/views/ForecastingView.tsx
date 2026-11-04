@@ -216,3 +216,4 @@ export const ForecastingView: React.FC = () => {
     </div>
   );
 };
+

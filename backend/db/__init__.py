@@ -5,3 +5,4 @@ from .models import (
     EmissionRecord, AnomalyEvent, OptimizationRecommendation,
     SustainabilityTarget, AuditLog
 )
+
